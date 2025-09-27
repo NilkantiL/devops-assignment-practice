@@ -1,0 +1,30 @@
+name: Node.js CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Test app
+        run: node index.js
+
+      - name: Build Docker image
+        run: docker build -t mynodeapp .
+
+      - name: Run Docker container
+        run: docker run --rm mynodeapp
